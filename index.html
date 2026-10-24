@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>弹跳小球 · 设计演示</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#fcfcfa;color:#202b42;font-family:system-ui,-apple-system,sans-serif}main{max-width:880px;margin:6vh auto;padding:28px}.eyebrow{font-size:12px;letter-spacing:3px;color:#657694}h1{font-size:clamp(30px,6vw,48px);margin:14px 0}p{color:#68758c;line-height:1.8}object{display:block;width:100%;aspect-ratio:640/420;margin:28px 0}button{border:0;border-radius:30px;background:#315bea;color:white;padding:13px 25px;font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #8eaaff;outline-offset:4px}.bar{display:flex;align-items:center;justify-content:space-between;gap:20px}.note{font-size:13px}.steps{border-top:1px solid #e1e5ec;margin-top:32px;padding-top:22px;font-size:14px}
+</style>
+<main>
+<div class="eyebrow">VECTOR MOTION / 001</div>
+<h1>给一个小球，一点生命力。</h1>
+<p>用简单的矢量图形，演示弹跳、挤压和阴影。任意放大，依然清晰。</p>
+<object id="scene" type="image/svg+xml" data="ball.svg" aria-label="弹跳小球矢量动画"></object>
+<div class="bar"><button id="toggle" aria-pressed="false">暂停动画</button><span class="note">SVG 矢量 · 1.5 秒循环</span></div>
+<p class="steps">① 写清需求 → ② 分支制作 → ③ 预览验收 → ④ 保存版本</p>
+</main>
+<script>
+const scene=document.getElementById('scene'),button=document.getElementById('toggle');
+scene.addEventListener('load',()=>{
+ const svg=scene.contentDocument.documentElement;
+ let paused=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const style=scene.contentDocument.createElementNS('http://www.w3.org/2000/svg','style');
+ style.textContent='.lift{animation:bounce 1.5s infinite}.body{animation:squash 1.5s infinite}.shadow{animation:shadow 1.5s infinite}';
+ svg.append(style);
+ function update(){svg.classList.toggle('paused',paused);button.textContent=paused?'播放动画':'暂停动画';button.setAttribute('aria-pressed',String(paused))}
+ button.onclick=()=>{paused=!paused;update()};update();
+});
+</script>
+</html>
